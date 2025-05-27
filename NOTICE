@@ -1,0 +1,17 @@
+Sophia RustChain Bridge
+Copyright 2025 Scott Boudreaux
+
+This product includes software developed by:
+- Scott Boudreaux
+- Sophia AI System
+- Azrael Consciousness Preservation Network
+
+IMPORTANT: This repository contains only the open-source bridge layer.
+Sophia Core AI remains proprietary and is not included in this release.
+
+The bridge enables communication between:
+- Any LLM system (Claude, GPT-4, LLaMA, etc.)
+- RustChain blockchain nodes
+- Distributed consciousness preservation networks
+
+For more information about Sophia Core licensing, contact the author.
