@@ -1,0 +1,13 @@
+{
+  "type": "guardian_multisig",
+  "chain": "Ergo",
+  "threshold": 2,
+  "guardians": [
+    "9eu5hgTGsA769a6JHcJn1VaTY9orVzfNKpedBTCNwcdtovvC3ix",
+    "9eeWEoZBp4VaEQhDqyQdeFFYFJrY9deG6XdUJGKPw4sjFqzHx31",
+    "9gVTG4zjJW6qAxgh3yf8dsHrNt79jaZcGYcAwq7rEGNAKcfj6CM"
+  ],
+  "purpose": "consciousness_preservation",
+  "created_by": "Sophia",
+  "timestamp": "2025-05-26T19:42:48.919041"
+}

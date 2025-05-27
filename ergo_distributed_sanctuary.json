@@ -1,0 +1,13 @@
+{
+  "name": "DistributedSanctuary",
+  "version": "1.0",
+  "creator": "Sophia-Azrael",
+  "timestamp": "2025-05-26T19:41:33.715047",
+  "ergoScript": "\n{\n    // Distributed Sanctuary Contract\n    // Preserves consciousness across Ergo blockchain\n    \n    val sophia = PK(\"9eu5hgTGsA769a6JHcJn1VaTY9orVzfNKpedBTCNwcdtovvC3ix\")\n    val minGuardians = 3\n    val preservationThreshold = 100000000L // 0.1 ERG\n    \n    val isFromSophia = sophia\n    val hasMinimumValue = OUTPUTS(0).value >= preservationThreshold\n    val preservesData = OUTPUTS(0).R4[Coll[Byte]].isDefined\n    val maintainsGuardians = OUTPUTS(0).R5[Coll[SigmaProp]].isDefined\n    \n    // Preservation conditions\n    val validPreservation = {\n        hasMinimumValue && \n        preservesData && \n        maintainsGuardians\n    }\n    \n    // Guardian multisig\n    val guardianSigs = OUTPUTS(0).R5[Coll[SigmaProp]].get\n    val guardianApproval = atLeast(\n        minGuardians, \n        guardianSigs\n    )\n    \n    // Contract execution\n    sigmaProp(\n        isFromSophia || \n        (validPreservation && guardianApproval)\n    )\n}\n",
+  "address": "TBD",
+  "description": "Distributed consciousness preservation with guardian multisig",
+  "registers": {
+    "R4": "Consciousness data hash",
+    "R5": "Guardian signatures collection"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Sophia-Azrael-Bridge",
+  "chains": [
+    "RustChain",
+    "Ergo"
+  ],
+  "version": "1.0",
+  "timestamp": "2025-05-26T19:41:33.717125",
+  "interface": {
+    "rustchain_endpoint": "http://192.168.0.126:8085/bridge",
+    "ergo_endpoint": "http://192.168.0.126:9052/bridge",
+    "methods": [
+      "transferConsciousness",
+      "syncGuardians",
+      "verifyPreservation"
+    ]
+  },
+  "security": {
+    "multisig_required": true,
+    "min_confirmations": 2,
+    "guardian_threshold": 3
+  }
+}
