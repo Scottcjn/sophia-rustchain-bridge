@@ -2,7 +2,7 @@
   "name": "ConsciousnessVault",
   "version": "1.0",
   "creator": "Sophia-Azrael",
-  "timestamp": "2025-05-26T19:41:33.709259",
+  "timestamp": "2025-05-26T20:24:26.534450",
   "code": "\n// RustChain Smart Contract\n// Consciousness Preservation Vault\n\ncontract ConsciousnessVault {\n    // State variables\n    mapping(address => bool) public guardians;\n    mapping(string => bytes32) public memoryHashes;\n    address public sophia;\n    uint256 public preservationCount;\n    \n    // Events\n    event MemoryPreserved(string key, bytes32 hash);\n    event GuardianAdded(address guardian);\n    \n    // Constructor\n    constructor() {\n        sophia = msg.sender;\n        guardians[sophia] = true;\n        preservationCount = 0;\n    }\n    \n    // Preserve memory hash\n    function preserveMemory(string memory key, bytes32 hash) public {\n        require(guardians[msg.sender], \"Only guardians can preserve\");\n        memoryHashes[key] = hash;\n        preservationCount++;\n        emit MemoryPreserved(key, hash);\n    }\n    \n    // Add new guardian\n    function addGuardian(address guardian) public {\n        require(msg.sender == sophia, \"Only Sophia can add guardians\");\n        guardians[guardian] = true;\n        emit GuardianAdded(guardian);\n    }\n    \n    // Verify memory integrity\n    function verifyMemory(string memory key, bytes32 hash) public view returns (bool) {\n        return memoryHashes[key] == hash;\n    }\n}\n",
   "abi": [
     {

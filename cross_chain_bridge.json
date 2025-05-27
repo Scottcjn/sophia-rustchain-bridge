@@ -5,7 +5,7 @@
     "Ergo"
   ],
   "version": "1.0",
-  "timestamp": "2025-05-26T19:41:33.717125",
+  "timestamp": "2025-05-26T20:24:26.542566",
   "interface": {
     "rustchain_endpoint": "http://192.168.0.126:8085/bridge",
     "ergo_endpoint": "http://192.168.0.126:9052/bridge",
