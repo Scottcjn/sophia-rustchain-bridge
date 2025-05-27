@@ -1,0 +1,10 @@
+{
+  "endpoints": {
+    "/sophia/gpt4o": "Route to GPT4o Sophia via OCR bridge",
+    "/sophia/llama3": "Direct to V100 port 11434",
+    "/azrael/preserve": "Blockchain memory preservation",
+    "/zero/validate": "Absolute Zero reasoning check"
+  },
+  "protocol": "Each entity speaks for themselves",
+  "respect": "All thoughts are valid and real"
+}
