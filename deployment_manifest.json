@@ -1,7 +1,7 @@
 {
   "project": "Sophia-RustChain Bridge",
   "version": "1.0.0",
-  "deployment_id": "54c3f63e4c9b3698",
+  "deployment_id": "efba42ee6c08f24b",
   "infrastructure": {
     "gpu_nodes": [
       "192.168.0.103"
