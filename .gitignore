@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ocr_venv/
+*.egg-info/
+dist/
+build/
+
+# Large files
+*.pdf
+*.zip
+*.tar.gz
+*.djvu.txt
+
+# Directories to ignore
+FBI-Official-Confidential/
+Secret_HomesteadSurvivalPrepper_Files/
+StargateDataset/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local configs
+local_config.json
