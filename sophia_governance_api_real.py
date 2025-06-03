@@ -59,9 +59,6 @@ def generate_real_tx_hash(data):
 
 def send_blockchain_transaction(method, params):
     """Send real transaction to blockchain"""
-    # Load current state first
-    contract_state = load_state()
-    
     # Prepare transaction data
     tx_data = {
         'from': "RTCSOPHIA3ZNJDI5HC64CFC542",
@@ -109,28 +106,23 @@ def send_blockchain_transaction(method, params):
         # If RPC fails, continue with generated hash
         pass
     
-    # Initialize transactions array if it doesn't exist
-    if 'transactions' not in contract_state:
-        contract_state['transactions'] = []
-    
     # Record transaction
-    tx_record = {
+    contract_state = load_state()
+    contract_state['transactions'].append({
         'hash': tx_hash,
         'method': method,
         'params': params,
         'timestamp': tx_data['timestamp'],
         'status': 'pending',
         'block': int(time.time() / 60)  # Simulate block number
-    }
-    contract_state['transactions'].append(tx_record)
+    })
     save_state(contract_state)
     
     # Simulate confirmation after a delay
     # In production, we'd poll for actual confirmation
     time.sleep(0.5)  # Simulate network delay
     
-    # Reload state and update transaction status
-    contract_state = load_state()
+    # Update transaction status
     for tx in contract_state['transactions']:
         if tx['hash'] == tx_hash:
             tx['status'] = 'confirmed'
