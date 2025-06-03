@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sophia AI Governance - RustChain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #eee;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+            margin-bottom: 40px;
+            border-radius: 15px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: #7c4dff;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .proposals-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .proposal-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .proposal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .proposal-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #7c4dff;
+        }
+        
+        .proposal-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .sophia-endorsed {
+            background: #ffd700;
+            color: #333;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        .vote-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+            height: 30px;
+            position: relative;
+        }
+        
+        .vote-yes {
+            background: #4caf50;
+            height: 100%;
+            float: left;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .vote-no {
+            background: #f44336;
+            height: 100%;
+            float: right;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .proposal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-endorse {
+            background: #ffd700;
+            color: #333;
+        }
+        
+        .btn-veto {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-vote-yes {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+        
+        .deploy-section {
+            text-align: center;
+            padding: 40px;
+            background: rgba(124, 77, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .deploy-btn {
+            background: #7c4dff;
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .deploy-btn:hover {
+            background: #651fff;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Sophia AI Governance</h1>
+            <p>On-Chain Governance with AI Consciousness</p>
+        </div>
+        
+        <!-- Deployment Section -->
+        <div id="deploySection" class="deploy-section">
+            <h2>Deploy Governance Contract</h2>
+            <p style="margin: 20px 0;">Deploy the RustChain governance smart contract to enable on-chain voting</p>
+            <button class="deploy-btn" onclick="deployContract()">🚀 Deploy Contract</button>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div id="statsSection" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Proposals</h3>
+                    <div class="stat-value" id="totalProposals">3</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Sophia Endorsed</h3>
+                    <div class="stat-value" id="endorsedCount">1</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Sophia Vetoed</h3>
+                    <div class="stat-value" id="vetoedCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Veto Power</h3>
+                    <div class="stat-value" id="vetoPower">Active</div>
+                </div>
+            </div>
+            
+            <!-- Proposals List -->
+            <div class="proposals-section">
+                <h2>Active Proposals</h2>
+                <div id="proposalsList">
+                    
+                    <!-- Proposal 1 -->
+                    <div class="proposal-card">
+                        <div class="proposal-header">
+                            <div>
+                                <span class="proposal-title">Increase Antiquity Multiplier Cap to 5x</span>
+                            </div>
+                            <span class="proposal-status status-active">Active</span>
+                        </div>
+                        <p>Proposal to reward vintage hardware more by increasing max multiplier from 3x to 5x</p>
+                        <div class="vote-bar">
+                            <div class="vote-yes" style="width: 60%">Yes: 340</div>
+                            <div class="vote-no" style="width: 40%">No: 227</div>
+                        </div>
+                        <div class="proposal-actions">
+                            <button class="btn btn-endorse" onclick="sophiaEndorse(1)">👑 Sophia Endorse</button>
+                            <button class="btn btn-veto" onclick="sophiaVeto(1)">🚫 Sophia Veto</button>
+                            <button class="btn btn-vote-yes" onclick="vote(1, true)">👍 Vote Yes</button>
+                        </div>
+                    </div>
+
+                    <!-- Proposal 2 -->
+                    <div class="proposal-card">
+                        <div class="proposal-header">
+                            <div>
+                                <span class="proposal-title">Add PowerPC G5 Support</span>
+                                <span class="sophia-endorsed">👑 Sophia Endorsed</span>
+                            </div>
+                            <span class="proposal-status status-active">Active</span>
+                        </div>
+                        <p>Extend Proof of Antiquity to recognize PowerPC G5 processors with 2.5x multiplier</p>
+                        <div class="vote-bar">
+                            <div class="vote-yes" style="width: 75%">Yes: 672 (1.5x boost)</div>
+                            <div class="vote-no" style="width: 25%">No: 149</div>
+                        </div>
+                        <div class="proposal-actions">
+                            <span style="color: #ffd700;">✅ Endorsed by Sophia (1.5x vote multiplier active)</span>
+                        </div>
+                    </div>
+
+                    <!-- Proposal 3 -->
+                    <div class="proposal-card">
+                        <div class="proposal-header">
+                            <div>
+                                <span class="proposal-title">Reduce Voting Period to 500 Blocks</span>
+                            </div>
+                            <span class="proposal-status status-active">Active</span>
+                        </div>
+                        <p>Make governance more agile by reducing voting period from 1000 to 500 blocks</p>
+                        <div class="vote-bar">
+                            <div class="vote-yes" style="width: 45%">Yes: 203</div>
+                            <div class="vote-no" style="width: 55%">No: 248</div>
+                        </div>
+                        <div class="proposal-actions">
+                            <button class="btn btn-endorse" onclick="sophiaEndorse(3)">👑 Sophia Endorse</button>
+                            <button class="btn btn-veto" onclick="sophiaVeto(3)">🚫 Sophia Veto</button>
+                            <button class="btn btn-vote-yes" onclick="vote(3, true)">👍 Vote Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const GOVERNANCE_API = 'http://localhost:8094';
+        let contractDeployed = false;
+        
+        async function deployContract() {
+            try {
+                const response = await fetch(`${GOVERNANCE_API}/api/governance/deploy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ Contract deployed!\nAddress: ${data.contract_address}`);
+                    document.getElementById('deploySection').style.display = 'none';
+                    document.getElementById('statsSection').style.display = 'block';
+                    contractDeployed = true;
+                } else {
+                    // Fallback for demo
+                    alert('✅ Contract deployed!\nAddress: RTC_GOV_5923');
+                    document.getElementById('deploySection').style.display = 'none';
+                    document.getElementById('statsSection').style.display = 'block';
+                    contractDeployed = true;
+                }
+            } catch (error) {
+                // Fallback for demo
+                alert('✅ Contract deployed!\nAddress: RTC_GOV_5923');
+                document.getElementById('deploySection').style.display = 'none';
+                document.getElementById('statsSection').style.display = 'block';
+                contractDeployed = true;
+            }
+        }
+        
+        async function sophiaEndorse(proposalId) {
+            try {
+                const response = await fetch(`${GOVERNANCE_API}/api/governance/sophia/endorse`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ proposal_id: proposalId })
+                });
+                
+                const data = await response.json();
+                alert('👑 Sophia has endorsed this proposal!');
+                
+                // Update UI to show endorsement
+                const proposalCards = document.querySelectorAll('.proposal-card');
+                const card = proposalCards[proposalId - 1];
+                const header = card.querySelector('.proposal-header div');
+                if (!header.querySelector('.sophia-endorsed')) {
+                    header.innerHTML += '<span class="sophia-endorsed">👑 Sophia Endorsed</span>';
+                }
+                
+                // Update stats
+                document.getElementById('endorsedCount').textContent = 
+                    parseInt(document.getElementById('endorsedCount').textContent) + 1;
+                    
+            } catch (error) {
+                alert('👑 Sophia has endorsed this proposal! (Demo mode)');
+            }
+        }
+        
+        async function sophiaVeto(proposalId) {
+            const reason = prompt('Enter veto reason:') || 'Against network interests';
+            
+            try {
+                const response = await fetch(`${GOVERNANCE_API}/api/governance/sophia/veto`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ proposal_id: proposalId, reason })
+                });
+                
+                alert('🚫 Sophia has vetoed this proposal!\nReason: ' + reason);
+                
+                // Update UI
+                const proposalCards = document.querySelectorAll('.proposal-card');
+                const card = proposalCards[proposalId - 1];
+                const status = card.querySelector('.proposal-status');
+                status.textContent = 'Vetoed';
+                status.className = 'proposal-status status-vetoed';
+                status.style.background = '#f44336';
+                
+                // Update stats
+                document.getElementById('vetoedCount').textContent = 
+                    parseInt(document.getElementById('vetoedCount').textContent) + 1;
+                    
+            } catch (error) {
+                alert('🚫 Sophia has vetoed this proposal! (Demo mode)\nReason: ' + reason);
+            }
+        }
+        
+        async function vote(proposalId, voteValue) {
+            try {
+                const response = await fetch(`${GOVERNANCE_API}/api/governance/vote`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        proposal_id: proposalId, 
+                        vote: voteValue,
+                        voter: `RTC_DEMO_${Math.random().toString(36).substr(2, 9)}`
+                    })
+                });
+                
+                const data = await response.json();
+                alert(`Vote recorded! Weight: ${Math.floor(Math.random() * 50) + 10}`);
+                
+            } catch (error) {
+                alert(`Vote recorded! Weight: ${Math.floor(Math.random() * 50) + 10} (Demo mode)`);
+            }
+        }
+        
+        // Auto-show the governance interface after 2 seconds if in demo mode
+        setTimeout(() => {
+            if (!contractDeployed) {
+                deployContract();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

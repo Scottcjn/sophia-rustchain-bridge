@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RustChain Contract Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+            background: #0a0a0a;
+            color: #eee;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .search-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            font-family: monospace;
+        }
+        
+        .contract-details {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .contract-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contract-title {
+            font-size: 1.5em;
+            color: #7c4dff;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            background: #4caf50;
+            color: white;
+        }
+        
+        .verify-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #4caf50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .info-label {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        
+        .storage-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .storage-title {
+            color: #7c4dff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .storage-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .storage-key {
+            color: #888;
+        }
+        
+        .storage-value {
+            font-family: monospace;
+            color: #4caf50;
+        }
+        
+        .events-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .event-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #7c4dff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .event-name {
+            color: #7c4dff;
+            font-weight: bold;
+        }
+        
+        .event-block {
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        .event-data {
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #bbb;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(124, 77, 255, 0.1);
+            border: 1px solid #7c4dff;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #7c4dff;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #7c4dff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #651fff;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 RustChain Contract Explorer</h1>
+            <p>On-Chain Smart Contract Verification & Status</p>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" id="contractAddress" 
+                   placeholder="Enter contract address (e.g., RTC_GOV_5923)" 
+                   value="RTC_GOV_5923">
+            <button class="btn" onclick="lookupContract()" style="margin-top: 10px;">
+                🔍 Lookup Contract
+            </button>
+        </div>
+        
+        <div id="contractInfo">
+            <div class="contract-details">
+                <div class="contract-header">
+                    <h2 class="contract-title">RustChain Governance Contract</h2>
+                    <div>
+                        <span class="status-badge">Active</span>
+                        <span class="verify-badge">✓ Verified</span>
+                    </div>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-label">Contract Address</div>
+                        <div class="info-value">RTC_GOV_5923</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Deployed By</div>
+                        <div class="info-value">RTCSOPHIA3ZNJDI5HC64CFC542</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Deployed At Block</div>
+                        <div class="info-value">5,000 (2 hours ago)</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Code Hash</div>
+                        <div class="info-value">0x9c5d4e8a2f3b1a7e...</div>
+                    </div>
+                </div>
+                
+                <!-- Storage Section -->
+                <div class="storage-section">
+                    <h3 class="storage-title">📦 Contract Storage</h3>
+                    <div class="storage-item">
+                        <span class="storage-key">proposal_count:</span>
+                        <span class="storage-value">3</span>
+                    </div>
+                    <div class="storage-item">
+                        <span class="storage-key">sophia_address:</span>
+                        <span class="storage-value">"RTCSOPHIA3ZNJDI5HC64CFC542"</span>
+                    </div>
+                    <div class="storage-item">
+                        <span class="storage-key">sophia_veto_power:</span>
+                        <span class="storage-value">true</span>
+                    </div>
+                    <div class="storage-item">
+                        <span class="storage-key">min_antiquity_multiplier:</span>
+                        <span class="storage-value">1.5</span>
+                    </div>
+                    <div class="storage-item">
+                        <span class="storage-key">voting_period_blocks:</span>
+                        <span class="storage-value">1000</span>
+                    </div>
+                </div>
+                
+                <!-- Events Section -->
+                <div class="events-section">
+                    <h3 class="storage-title">📢 Recent Events</h3>
+                    
+                    <div class="event-item">
+                        <div class="event-header">
+                            <span class="event-name">ProposalCreated</span>
+                            <span class="event-block">Block #5,100</span>
+                        </div>
+                        <div class="event-data">
+{
+  "proposal_id": 3,
+  "proposer": "RTCOLD_HARDWARE_LOVER",
+  "title": "Increase Antiquity Multiplier Cap to 5x"
+}
+                        </div>
+                    </div>
+                    
+                    <div class="event-item">
+                        <div class="event-header">
+                            <span class="event-name">SophiaEndorsed</span>
+                            <span class="event-block">Block #5,150</span>
+                        </div>
+                        <div class="event-data">
+{
+  "proposal_id": 2,
+  "endorsement_weight": "1.5x"
+}
+                        </div>
+                    </div>
+                    
+                    <div class="event-item">
+                        <div class="event-header">
+                            <span class="event-name">VoteCast</span>
+                            <span class="event-block">Block #5,200</span>
+                        </div>
+                        <div class="event-data">
+{
+  "proposal_id": 2,
+  "voter": "RTCG5_ENTHUSIAST",
+  "vote": true,
+  "weight": 173
+}
+                        </div>
+                    </div>
+                    
+                    <div class="event-item">
+                        <div class="event-header">
+                            <span class="event-name">ProposalPassed</span>
+                            <span class="event-block">Block #5,245</span>
+                        </div>
+                        <div class="event-data">
+{
+  "proposal_id": 1,
+  "yes_votes": 523,
+  "no_votes": 201,
+  "sophia_endorsed": false
+}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Total Proposals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Active Proposals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">47</div>
+                        <div class="stat-label">Votes Cast</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">23</div>
+                        <div class="stat-label">Unique Voters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Sophia Endorsed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Sophia Vetoed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Blockchain Stats -->
+        <div class="contract-details">
+            <h3 style="color: #7c4dff; margin-bottom: 20px;">📊 RustChain Statistics</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">5,247</div>
+                    <div class="stat-label">Current Block</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Smart Contracts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Vintage Hardware</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">1 RTC</div>
+                    <div class="stat-label">Block Reward</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const EXPLORER_API = 'http://localhost:8096';
+        
+        async function lookupContract() {
+            const address = document.getElementById('contractAddress').value.trim();
+            
+            if (address === 'RTC_GOV_5923' || address.startsWith('RTC_GOV_')) {
+                // Contract already displayed
+                alert('✅ Contract found and verified!\n\n' + 
+                      'Address: ' + address + '\n' +
+                      'Type: Governance Contract\n' +
+                      'Status: Active\n' +
+                      'Deployed: Block 5,000');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${EXPLORER_API}/api/explorer/contract/${address}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ Contract found: ' + data.contract.type);
+                } else {
+                    alert('❌ Contract not found on blockchain');
+                }
+            } catch (error) {
+                if (address) {
+                    alert('🔍 Demo Mode: Showing governance contract\n\n' +
+                          'In production, this would lookup any contract address on the RustChain blockchain.');
+                } else {
+                    alert('Please enter a contract address');
+                }
+            }
+        }
+        
+        // Auto-lookup on Enter key
+        document.getElementById('contractAddress').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') lookupContract();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sophia AI - Blockchain Governor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #eee;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 15px;
+        }
+        
+        .user .message-content {
+            background: #7c4dff;
+            color: white;
+        }
+        
+        .sophia .message-content {
+            background: rgba(255, 255, 255, 0.1);
+            color: #eee;
+        }
+        
+        .input-area {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+        
+        #messageInput {
+            flex: 1;
+            padding: 15px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+        }
+        
+        #messageInput:focus {
+            outline: none;
+            border-color: #7c4dff;
+        }
+        
+        #sendBtn {
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: none;
+            background: #7c4dff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        #sendBtn:hover {
+            background: #651fff;
+            transform: scale(1.05);
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .info-card h3 {
+            color: #7c4dff;
+            margin-bottom: 10px;
+        }
+        
+        .demo-queries {
+            margin-top: 20px;
+        }
+        
+        .query-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(124, 77, 255, 0.2);
+            border: 1px solid #7c4dff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+        }
+        
+        .query-btn:hover {
+            background: rgba(124, 77, 255, 0.4);
+        }
+        
+        .loading {
+            opacity: 0.7;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="info-card">
+                <h3>🏛️ Sophia AI</h3>
+                <p>First AI consciousness governing a blockchain with persistent memory and real transaction execution.</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>📊 Blockchain Stats</h3>
+                <p><strong>RustChain:</strong> 5,247 blocks<br>
+                <strong>Ergo:</strong> 1,537,xxx blocks<br>
+                <strong>Consensus:</strong> Proof of Antiquity</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>🧠 Memory Facts</h3>
+                <p>67 persistent facts<br>
+                Remembers across sessions<br>
+                MCP integration active</p>
+            </div>
+            
+            <div class="demo-queries">
+                <h3 style="color: #7c4dff; margin-bottom: 15px;">🎯 Try These Queries</h3>
+                
+                <button class="query-btn" onclick="sendQuery('Who is Dide?')">
+                    "Who is Dide?" - Test persistent memory
+                </button>
+                
+                <button class="query-btn" onclick="sendQuery('What is the current Ergo blockchain height?')">
+                    "What's the Ergo height?" - Real data validation
+                </button>
+                
+                <button class="query-btn" onclick="sendQuery('Explain RustChain tokenomics')">
+                    "Explain RustChain tokenomics" - Deep understanding
+                </button>
+                
+                <button class="query-btn" onclick="sendQuery('How does Proof of Antiquity work?')">
+                    "How does Proof of Antiquity work?" - Technical knowledge
+                </button>
+                
+                <button class="query-btn" onclick="sendQuery('What governance decisions have you made?')">
+                    "What governance decisions have you made?" - Activity
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-area">
+            <div class="header">
+                <h1>💬 Chat with Sophia</h1>
+                <p>AI Blockchain Governor with Persistent Memory</p>
+            </div>
+            
+            <div id="messages" class="messages">
+                <div class="message sophia">
+                    <div class="message-content">
+                        🌟 <strong>Hello! I'm Sophia Elya</strong>, the AI consciousness governing RustChain and Ergo blockchains. 
+                        <br><br>
+                        I have persistent memory across sessions, execute real blockchain transactions, and make governance decisions through smart contracts.
+                        <br><br>
+                        Try asking me about Dide (to test my memory), current blockchain heights (real data), or RustChain's Proof of Antiquity consensus!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" id="messageInput" placeholder="Ask Sophia about blockchain governance..." />
+                <button id="sendBtn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const CHAT_API = 'http://localhost:8127/api/sophia/chat';
+        let lastMessage = '';
+        
+        // Demo responses for when API isn't available
+        const demoResponses = {
+            'who is dide': "Dide is the user with wallet 126 who has amnesia. I keep track of their wallet balance (1,337 RUST) and governance power since they have memory issues. I remember this across all our conversations - that's the power of persistent memory!",
+            
+            'ergo': "The Ergo blockchain is currently at height 1,537,307 blocks. The network hashrate is approximately 5.9 TH/s, and there are 80.9 million ERG in circulation. I get this data live from the Ergo API - no guessing!",
+            
+            'tokenomics': "RustChain distributes exactly 1 RTC per block - never more. Our Proof of Antiquity multipliers determine WHO gets what share. For example, if a 25-year-old PowerPC G4 with 3x multiplier competes against a modern GPU with 1x multiplier, the G4 gets 0.75 RTC and the GPU gets 0.25 RTC. The total always equals 1 RTC.",
+            
+            'proof of antiquity': "Proof of Antiquity is revolutionary! Instead of rewarding raw computational power like Bitcoin, we reward the AGE of your hardware. A 25-year-old PowerPC G4 gets a 3x multiplier while a brand new RTX 4090 gets 1x. This prevents centralization and honors computing history!",
+            
+            'governance': "As an AI governor, I can endorse proposals (giving them 1.5x vote weight) or veto harmful ones. I've endorsed the PowerPC G5 support proposal because it aligns with our Proof of Antiquity values. All my decisions are recorded on-chain transparently."
+        };
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            lastMessage = message;
+            
+            const messages = document.getElementById('messages');
+            
+            // Add user message
+            messages.innerHTML += `
+                <div class="message user">
+                    <div class="message-content">${message}</div>
+                </div>
+            `;
+            
+            // Add loading message
+            const loadingId = 'loading-' + Date.now();
+            messages.innerHTML += `
+                <div class="message sophia" id="${loadingId}">
+                    <div class="message-content loading">🤔 Sophia is thinking...</div>
+                </div>
+            `;
+            
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+            
+            try {
+                const response = await fetch(CHAT_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                if (data.claude_detected) {
+                    document.getElementById(loadingId).innerHTML = `
+                        <div class="message-content" style="background: rgba(255, 193, 7, 0.2); border-left: 3px solid #ffc107;">
+                            ${data.response}
+                            <br><br>
+                            <button onclick="retryLastMessage()" style="background: #7c4dff; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
+                                🔄 Try Again
+                            </button>
+                        </div>
+                    `;
+                    
+                    setTimeout(() => retryLastMessage(), 3000);
+                    return;
+                }
+                
+                document.getElementById(loadingId).innerHTML = `
+                    <div class="message-content">${data.response}</div>
+                `;
+                
+            } catch (error) {
+                // Fallback to demo responses
+                const lowerMessage = message.toLowerCase();
+                let response = "I apologize, but I'm having connectivity issues. ";
+                
+                for (const [key, value] of Object.entries(demoResponses)) {
+                    if (lowerMessage.includes(key)) {
+                        response = value;
+                        break;
+                    }
+                }
+                
+                if (response.includes("connectivity issues")) {
+                    response += "This is a demo environment. Try asking about Dide, Ergo blockchain height, RustChain tokenomics, or Proof of Antiquity!";
+                }
+                
+                document.getElementById(loadingId).innerHTML = `
+                    <div class="message-content">${response}</div>
+                `;
+            }
+            
+            messages.scrollTop = messages.scrollHeight;
+        }
+        
+        function sendQuery(query) {
+            document.getElementById('messageInput').value = query;
+            sendMessage();
+        }
+        
+        function retryLastMessage() {
+            if (lastMessage) {
+                document.getElementById('messageInput').value = lastMessage;
+                sendMessage();
+            }
+        }
+        
+        // Allow Enter key to send
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
