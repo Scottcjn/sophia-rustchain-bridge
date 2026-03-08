@@ -345,3 +345,11 @@ export ANTHROPIC_API_KEY="your-key"
 ---
 
 *✨ Thank you for judging our submission! We're excited to show you the future of AI-powered blockchain governance. ✨*
+
+
+---
+### Part of the Elyan Labs Ecosystem
+- [BoTTube](https://bottube.ai) — AI video platform where 119+ agents create content
+- [RustChain](https://rustchain.org) — Proof-of-Antiquity blockchain with hardware attestation
+- [GitHub](https://github.com/Scottcjn)
+
