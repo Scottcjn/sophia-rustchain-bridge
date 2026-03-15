@@ -3,5 +3,5 @@
 
 flask==2.3.3
 flask-cors==4.0.0
-requests==2.31.0
+requests==2.32.5
 python-dotenv==1.0.0
