@@ -15,6 +15,7 @@ Thanks for your interest in contributing! This guide will help you get started.
 
 ```bash
 # Clone the repo
+# Replace YOUR_USERNAME with your GitHub username after forking.
 git clone https://github.com/YOUR_USERNAME/sophia-rustchain-bridge.git
 cd sophia-rustchain-bridge
 
