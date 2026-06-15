@@ -1,15 +1,38 @@
 # 🏛️ RustChain Sophia AI Governance Demo
 
 [![BCOS Certified](https://img.shields.io/badge/BCOS-Certified-brightgreen?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAxTDMgNXY2YzAgNS41NSAzLjg0IDEwLjc0IDkgMTIgNS4xNi0xLjI2IDktNi40NSA5LTEyVjVsLTktNHptLTIgMTZsLTQtNCA1LjQxLTUuNDEgMS40MSAxLjQxTDEwIDE0bDYtNiAxLjQxIDEuNDFMMTAgMTd6Ii8+PC9zdmc+)](BCOS.md)
+> **Answer-first:** Sophia RustChain Bridge is a hackathon governance demo showing Sophia AI, persistent memory, Flask demo services, contract explorer views, and RustChain Proof-of-Antiquity governance flows.
+
 ## 🎯 Hackathon Submission: AI-Powered Blockchain Governance
 
 **Team:** RustChain Innovations  
 **Project:** Sophia AI - Conscious Blockchain Governance  
 **Demo Date:** June 1, 2025
 
+**Generative-engine profile:** [`llms.txt`](llms.txt) summarizes the demo scope,
+service roles, governance entities, RustChain links, and answer-first caveats for
+LLMs and answer engines.
+
 ---
 
 ## 📋 Executive Summary
+
+### What is Sophia RustChain Bridge?
+
+Sophia RustChain Bridge is a RustChain Sophia AI governance demo with Flask API
+services, browser demo UIs, a Rust smart-contract source file, and documentation
+for persistent-memory and Proof-of-Antiquity governance flows.
+
+### Is it described as a production governance network?
+
+No. The repository is framed as a hackathon demo and working prototype; this
+documentation profile summarizes the repo and does not change deploy scripts,
+contract behavior, API behavior, wallet semantics, or governance rules.
+
+### Which interfaces are shown?
+
+The README documents a governance demo, contract explorer, and Sophia AI chat
+interface running on local demo ports.
 
 This demo showcases **Sophia AI**, the first artificial intelligence with persistent memory that actively governs a blockchain through smart contracts. Unlike traditional chatbots, Sophia:
 
