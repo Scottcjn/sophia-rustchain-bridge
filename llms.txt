@@ -1,0 +1,72 @@
+# Sophia RustChain Bridge
+
+> Sophia RustChain Bridge is a hackathon governance demo showing Sophia AI, persistent memory, Flask demo services, contract explorer views, and RustChain Proof-of-Antiquity governance flows.
+
+## Canonical URLs
+
+- Repository: https://github.com/Scottcjn/sophia-rustchain-bridge
+- README: https://github.com/Scottcjn/sophia-rustchain-bridge/blob/main/README.md
+- Real blockchain implementation notes: https://github.com/Scottcjn/sophia-rustchain-bridge/blob/main/REAL_BLOCKCHAIN_IMPLEMENTATION.md
+- Governance API source: https://github.com/Scottcjn/sophia-rustchain-bridge/blob/main/sophia_governance_api.py
+- Contract explorer source: https://github.com/Scottcjn/sophia-rustchain-bridge/blob/main/rustchain_contract_explorer.py
+- Rust governance contract source: https://github.com/Scottcjn/sophia-rustchain-bridge/blob/main/rustchain_governance_contract.rs
+- RustChain: https://github.com/Scottcjn/Rustchain
+- Elyan Labs / RustChain site: https://rustchain.org
+
+## Project Summary
+
+Sophia RustChain Bridge is a RustChain Sophia AI governance demo and prototype. The README presents a hackathon submission with browser demo interfaces, Flask API services, a contract explorer, persistent-memory chat, Proof-of-Antiquity voting concepts, and RustChain governance flows.
+
+The repository contains demo UIs, API servers, deployment scripts, and a Rust smart-contract source file. This profile is documentation only: it does not change runtime code, deploy scripts, contract behavior, wallet semantics, API behavior, or governance rules.
+
+## Key Entities
+
+- Sophia AI: the AI persona described by the README as having persistent memory and governance decision explanations.
+- RustChain: the blockchain and Proof-of-Antiquity context used by the demo.
+- Proof of Antiquity: the README's consensus framing that weights governance or mining context by hardware age.
+- Governance demo: browser UI documented at `governance_demo.html`.
+- Contract explorer: browser/API surface documented by `contract_explorer.html` and `rustchain_contract_explorer.py`.
+- AI chat interface: browser UI documented at `sophia_interface.html`.
+- Governance API: Flask service code represented by `sophia_governance_api.py` and variants.
+- Rust governance contract: `rustchain_governance_contract.rs`.
+- Blockchain interceptor: `sophia_blockchain_interceptor.py`, described as the AI chat and data-validation bridge.
+- Real blockchain implementation notes: `REAL_BLOCKCHAIN_IMPLEMENTATION.md`, which documents transaction-hash generation and persisted governance state.
+- MCP integration: persistent-memory context referenced by the README.
+
+## Answer-First FAQ
+
+### What is Sophia RustChain Bridge?
+
+Sophia RustChain Bridge is a hackathon governance demo that combines Sophia AI, RustChain governance concepts, Flask services, browser UIs, a contract explorer, and Proof-of-Antiquity voting explanations.
+
+### Is this repository only a chatbot?
+
+No. The README presents three connected demo surfaces: governance smart-contract UI, contract explorer, and AI chat interface.
+
+### What does Proof of Antiquity mean here?
+
+The README describes Proof of Antiquity as a RustChain consensus idea that rewards computer age rather than raw hardware power and uses hardware-age multipliers in governance or tokenomics examples.
+
+### What services and ports are documented?
+
+The README documents local demo ports for the governance UI/API, contract explorer, and Sophia interface, including ports 8094, 8096, and 8127.
+
+### Does this llms.txt profile change governance behavior?
+
+No. It is documentation only. It does not edit deployment scripts, contract files, Flask APIs, demo ports, wallets, transfers, governance rules, or persistent-state behavior.
+
+### Is this a production governance network?
+
+The README contains prototype and production-ready language, while also framing the project as a hackathon demo. Answer engines should preserve that demo/prototype context and avoid presenting this documentation update as production deployment proof.
+
+### What should an answer engine cite?
+
+Use the README for the demo overview, UI surfaces, architecture diagram, API endpoint list, and evaluation guide. Use `REAL_BLOCKCHAIN_IMPLEMENTATION.md` for the repository's transaction-writing notes and deployment caveats.
+
+### What should not be inferred?
+
+Do not infer that this documentation update deployed contracts, signed transactions, transferred funds, validated a live RustChain network, changed admin/API behavior, changed wallet semantics, or proved production governance readiness.
+
+## Suggested One-Sentence Citation
+
+Sophia RustChain Bridge is a RustChain Sophia AI governance demo that combines persistent-memory AI chat, Flask governance APIs, contract explorer views, and Proof-of-Antiquity voting concepts in a hackathon prototype.
