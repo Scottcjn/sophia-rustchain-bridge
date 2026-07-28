@@ -1,17 +1,21 @@
 #!/bin/bash
+# NOTE: this script previously hardcoded the production node's SSH password,
+# in a public repository, and piped it to `sudo -S`. It now reads the value
+# from SOPHIA_SSH_PASS and refuses to run if that is unset.
+# The old value must be treated as compromised and rotated.
 # Update frontend on server with veto reason display
 
 SERVER="50.28.86.131"
 USER="sophia"
-PASS="sophia1313!"
+PASS="${SOPHIA_SSH_PASS:?set SOPHIA_SSH_PASS in your environment; do not hardcode it}"
 
 echo "🎨 Updating frontend on $SERVER..."
 
 # First copy to home directory
-sshpass -p "$PASS" scp governance_demo.html $USER@$SERVER:/home/sophia/
+SSHPASS="$PASS" sshpass -e scp governance_demo.html $USER@$SERVER:/home/sophia/
 
 # Then move to web directory with sudo
-sshpass -p "$PASS" ssh $USER@$SERVER "echo '$PASS' | sudo -S cp /home/sophia/governance_demo.html /var/www/html/sophia_governance_demo.html"
+SSHPASS="$PASS" sshpass -e ssh $USER@$SERVER "echo '$PASS' | sudo -S cp /home/sophia/governance_demo.html /var/www/html/sophia_governance_demo.html"
 
 # Also update the demo package
 echo "📦 Creating updated judges package..."
@@ -56,8 +60,8 @@ cd ..
 
 # Upload to server
 echo "📤 Uploading package to server..."
-sshpass -p "$PASS" scp rustchain-sophia-governance-demo.zip $USER@$SERVER:/home/sophia/
-sshpass -p "$PASS" ssh $USER@$SERVER "echo '$PASS' | sudo -S mv /home/sophia/rustchain-sophia-governance-demo.zip /var/www/html/"
+SSHPASS="$PASS" sshpass -e scp rustchain-sophia-governance-demo.zip $USER@$SERVER:/home/sophia/
+SSHPASS="$PASS" sshpass -e ssh $USER@$SERVER "echo '$PASS' | sudo -S mv /home/sophia/rustchain-sophia-governance-demo.zip /var/www/html/"
 
 # Clean up
 rm -rf demo_package_temp
