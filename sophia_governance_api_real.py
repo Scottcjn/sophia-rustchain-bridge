@@ -57,8 +57,14 @@ def generate_real_tx_hash(data):
     tx_data = json.dumps(data, sort_keys=True) + str(time.time())
     return '0x' + hashlib.sha256(tx_data.encode()).hexdigest()
 
-def send_blockchain_transaction(method, params):
-    """Send real transaction to blockchain"""
+def send_blockchain_transaction(method, params, contract_state):
+    """Send real transaction to blockchain and record it on `contract_state`.
+
+    The record is appended to the state dict the caller is already holding, and
+    persisting is left to the caller. Loading a second copy from disk here meant
+    the caller's later save_state() rewrote the file from a snapshot taken
+    before the transaction existed, silently dropping it from the ledger.
+    """
     # Prepare transaction data
     tx_data = {
         'from': "RTCSOPHIA3ZNJDI5HC64CFC542",
@@ -107,29 +113,24 @@ def send_blockchain_transaction(method, params):
         pass
     
     # Record transaction
-    contract_state = load_state()
-    contract_state['transactions'].append({
+    tx_record = {
         'hash': tx_hash,
         'method': method,
         'params': params,
         'timestamp': tx_data['timestamp'],
         'status': 'pending',
         'block': int(time.time() / 60)  # Simulate block number
-    })
-    save_state(contract_state)
-    
+    }
+    contract_state.setdefault('transactions', []).append(tx_record)
+
     # Simulate confirmation after a delay
     # In production, we'd poll for actual confirmation
     time.sleep(0.5)  # Simulate network delay
-    
+
     # Update transaction status
-    for tx in contract_state['transactions']:
-        if tx['hash'] == tx_hash:
-            tx['status'] = 'confirmed'
-            tx['confirmations'] = 1
-            break
-    
-    save_state(contract_state)
+    tx_record['status'] = 'confirmed'
+    tx_record['confirmations'] = 1
+
     return tx_hash
 
 @app.route('/api/governance/deploy', methods=['POST'])
@@ -147,7 +148,7 @@ def deploy_contract():
         }
     }
     
-    tx_hash = send_blockchain_transaction('deploy', deploy_data)
+    tx_hash = send_blockchain_transaction('deploy', deploy_data, contract_state)
     
     contract_state["deployed"] = True
     contract_state["deploy_time"] = datetime.now().isoformat()
@@ -190,7 +191,7 @@ def create_proposal():
         'title': proposal['title'],
         'description': proposal['description'],
         'proposer': proposal['proposer']
-    })
+    }, contract_state)
     
     proposal['creation_tx'] = tx_hash
     contract_state["proposals"][str(proposal_id)] = proposal
@@ -231,7 +232,7 @@ def vote():
         'vote': vote_value,
         'weight': vote_weight,
         'antiquity_multiplier': antiquity_multiplier
-    })
+    }, contract_state)
     
     # Record vote
     vote_key = f"{proposal_id}_{voter}"
@@ -264,6 +265,9 @@ def vote():
             }
         })
     else:
+        # The transaction was already broadcast above, so it still belongs in the
+        # ledger even though the duplicate vote itself is rejected.
+        save_state(contract_state)
         return jsonify({"success": False, "error": "Already voted"}), 400
 
 @app.route('/api/governance/sophia/endorse', methods=['POST'])
@@ -282,7 +286,7 @@ def sophia_endorse():
         'proposal_id': proposal_id,
         'endorser': contract_state["sophia_address"],
         'timestamp': datetime.now().isoformat()
-    })
+    }, contract_state)
     
     proposal = contract_state["proposals"][proposal_id]
     proposal["sophia_endorsed"] = True
@@ -319,7 +323,7 @@ def sophia_veto():
         'vetoer': contract_state["sophia_address"],
         'reason': reason,
         'timestamp': datetime.now().isoformat()
-    })
+    }, contract_state)
     
     proposal = contract_state["proposals"][proposal_id]
     proposal["status"] = "Vetoed"
@@ -422,7 +426,7 @@ def setup_demo():
             'title': prop['title'],
             'description': prop['description'],
             'proposer': prop['proposer']
-        })
+        }, contract_state)
         
         proposal = {
             "id": proposal_id,
@@ -445,7 +449,7 @@ def setup_demo():
     endorse_tx = send_blockchain_transaction('sophiaEndorse', {
         'proposal_id': 2,
         'endorser': contract_state["sophia_address"]
-    })
+    }, contract_state)
     
     contract_state["proposals"]["2"]["sophia_endorsed"] = True
     contract_state["proposals"]["2"]["endorsement_tx"] = endorse_tx
